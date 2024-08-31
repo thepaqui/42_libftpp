@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_MESSAGE_HPP
+# define LIBFTPP_MESSAGE_HPP
+#endif

@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_MEMENTO_HPP
+# define LIBFTPP_MEMENTO_HPP
+#endif

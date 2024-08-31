@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_IVECTOR2_HPP
+# define LIBFTPP_IVECTOR2_HPP
+#endif

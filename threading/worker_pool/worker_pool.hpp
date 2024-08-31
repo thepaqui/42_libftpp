@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_WORKER_POOL_HPP
+# define LIBFTPP_WORKER_POOL_HPP
+#endif

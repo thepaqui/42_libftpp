@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_OBSERVER_HPP
+# define LIBFTPP_OBSERVER_HPP
+#endif

@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_DATA_BUFFER_HPP
+# define LIBFTPP_DATA_BUFFER_HPP
+#endif

@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_SINGLETON_HPP
+# define LIBFTPP_SINGLETON_HPP
+#endif

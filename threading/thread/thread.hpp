@@ -1,0 +1,3 @@
+#ifndef LIBFTPP_THREAD_HPP
+# define LIBFTPP_THREAD_HPP
+#endif
