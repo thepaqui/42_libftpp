@@ -6,8 +6,8 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 - ✅ Basic Setup
 
-- ❌ Data Structures
-  - ❌ Pool
+- ⌛ Data Structures
+  - ⌛ Pool
   - ❌ Data Buffer
 
 - ❌ Design Patterns
