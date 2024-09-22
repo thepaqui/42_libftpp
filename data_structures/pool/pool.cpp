@@ -9,18 +9,15 @@ Pool<TType>::growPool(
 )
 {
 	size_t	objectsToAllocate = newSize - totalAllocated;
-	size_t	blockSize = 5; // Allocating in blocks of 5 to reduce overhead
+
 	while (objectsToAllocate > 0) {
-		size_t	allocateNow = std::min(blockSize, objectsToAllocate);
-		Block	newBlock = { std::make_unique<TType[]>(allocateNow), allocateNow };
+		auto	newObject = std::make_unique<TType>();
 
-		for (size_t i = 0; i < allocateNow; i++) {
-			availableObjects.push_back(&newBlock.data[i]);
-		}
+		availableObjects.push_back(newObject.get());
+		allocatedObjects.push_back(std::move(newObject));
 
-		allocatedBlocks.push_back(std::move(newBlock));
-		totalAllocated += allocateNow;
-		objectsToAllocate -= allocateNow;
+		totalAllocated++;
+		objectsToAllocate--;
 	}
 }
 
@@ -32,7 +29,30 @@ Pool<TType>::shrinkPool(
 {
 	size_t	objectsToRemove = totalAllocated - newSize;
 
-	while (objectsToRemove > 0 && !)
+	while (objectsToRemove > 0 && !allocatedObjects.empty()) {
+		if (availableObjects.empty())
+			throw NoAvailableObjectsToRemoveException();
+
+		TType*	obj = availableObjects.back();
+		availableObjects.pop_back();
+
+		auto it = std::find_if(
+			allocatedObjects.begin(),
+			allocatedObjects.end(),
+			[obj](const std::unique_ptr<TType>& ptr) { return ptr.get() == obj; }
+		);
+
+		if (it != allocatedObjects.end()) {
+			allocatedObjects.erase(it);
+			totalAllocated--;
+			objectsToRemove--;
+		}
+		// If a TType is in the available but not the allocated,
+		// we remove it anyway cause it's not supposed to be there.
+		// FYI, this sould never happen.
+	}
+	if (objectsToRemove > 0)
+		throw NoAllocatedObjectsToRemoveException();
 }
 
 template <typename TType>
@@ -73,6 +93,7 @@ Pool<TType>::Object::Object(
 template <typename TType>
 Pool<TType>::Object::~Object()
 {
+	// Pool should never be null here, the check is only for cleanliness
 	if (pool)
 		pool->returnObject(object);
 }

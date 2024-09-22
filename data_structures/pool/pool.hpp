@@ -37,7 +37,7 @@ public :
 	Object	acquire(TArgs&&... p_args)
 	{
 		if (availableObjects.empty())
-			throw std::exception(); // TODO: Make custom exception
+			throw NoAvailableObjectsException();
 
 		TType*	obj = availableObjects.back();
 		availableObjects.pop_back();
@@ -48,6 +48,22 @@ public :
 		Object	objectWrapper(this, obj);
 		return objectWrapper;
 	}
+
+	/* Exceptions */
+	class NoAvailableObjectsException : public std::exception {
+	public :
+		const char*	what() const noexcept { return "Pool: No available objects."; }
+	};
+
+	class NoAvailableObjectsToRemoveException : public std::exception {
+	public :
+		const char*	what() const noexcept { return "Pool: No available objects to remove."; }
+	};
+
+	class NoAllocatedObjectsToRemoveException : public std::exception {
+	public :
+		const char*	what() const noexcept { return "Pool: No allocated objects to remove."; }
+	};
 };
 
 #endif
