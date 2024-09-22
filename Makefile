@@ -2,7 +2,7 @@ NAME = libftpp.a
 
 CC = c++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++20
+CFLAGS = -Wall -Wextra -Werror -std=c++2a
 
 SRCS = 
 

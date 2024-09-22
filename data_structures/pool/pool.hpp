@@ -28,6 +28,8 @@ public :
 
 		Object(Pool<TType>* p_pool, TType* p_object);
 
+		friend class Pool;
+
 	public :
 		~Object();
 		TType*	operator->();
@@ -65,5 +67,7 @@ public :
 		const char*	what() const noexcept { return "Pool: No allocated objects to remove."; }
 	};
 };
+
+# include "pool.tpp"
 
 #endif

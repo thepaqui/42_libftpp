@@ -1,4 +1,7 @@
-#include "pool.hpp"
+#ifndef LIBFTPP_POOL_TPP
+# define LIBFTPP_POOL_TPP
+
+# include "pool.hpp"
 
 // Pool
 
@@ -104,3 +107,5 @@ Pool<TType>::Object::operator->()
 {
 	return object;
 }
+
+#endif
