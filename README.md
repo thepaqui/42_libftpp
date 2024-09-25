@@ -7,7 +7,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 - ✅ Basic Setup
 
 - ⌛ Data Structures
-  - ⌛ Pool
+  - ✅ Pool
   - ❌ Data Buffer
 
 - ❌ Design Patterns
@@ -29,8 +29,8 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ❌ Client
   - ❌ Server
 
-- ❌ Mathematics
-  - ❌ IVector2
+- ⌛ Mathematics
+  - ⌛ IVector2
   - ❌ IVector3
   - ❌ Random 2D Coordinate Generator
   - ❌ Perlin Noise 2D
