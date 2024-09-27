@@ -5,8 +5,8 @@ int main() {
     IVector2<int> vec1(3, 4);
     IVector2<int> vec2(1, 2);
     
-    std::cout << "Vec1 : " << vec1.x << " / " << vec1.y << std::endl;
-    std::cout << "Vec2 : " << vec2.x << " / " << vec2.y << std::endl;
+    std::cout << "Vec1 = [" << vec1.x << ", " << vec1.y << "]" << std::endl;
+    std::cout << "Vec2 = [" << vec2.x << ", " << vec2.y << "]" << std::endl;
     
 
     // Test operator overloads
@@ -18,12 +18,12 @@ int main() {
     std::cout << "vec1 - vec2 = (" << vecSub.x << ", " << vecSub.y << ")" << std::endl; 
     // Expected: vec1 - vec2 = (2, 2)
 
-    auto vecMul = vec1 * vec2;
-    std::cout << "vec1 * vec2 = (" << vecMul.x << ", " << vecMul.y << ")" << std::endl; 
+//    auto vecMul = vec1 * vec2;
+//    std::cout << "vec1 * vec2 = (" << vecMul.x << ", " << vecMul.y << ")" << std::endl; 
     // Expected: vec1 * vec2 = (3, 8)
 
-    auto vecDiv = vec1 / vec2;
-    std::cout << "vec1 / vec2 = (" << vecDiv.x << ", " << vecDiv.y << ")" << std::endl; 
+//    auto vecDiv = vec1 / vec2;
+//    std::cout << "vec1 / vec2 = (" << vecDiv.x << ", " << vecDiv.y << ")" << std::endl; 
     // Expected: vec1 / vec2 = (3, 2)
 
     bool isEqual = vec1 == vec2;
@@ -47,8 +47,8 @@ int main() {
     std::cout << "Dot product of vec1 and vec2: " << dotProd << "" << std::endl; 
     // Expected: Dot product of vec1 and vec2: 11 (or 3*1 + 4*2)
 
-    auto crossProd = vec1.cross();
-    std::cout << "Cross product of vec1: (" << crossProd.x << ", " << crossProd.y << ")" << std::endl; 
+//    auto crossProd = vec1.cross();
+//    std::cout << "Cross product of vec1: (" << crossProd.x << ", " << crossProd.y << ")" << std::endl; 
     // Expected: Cross product of vec1: (some_value, some_value)
 
     return 0;

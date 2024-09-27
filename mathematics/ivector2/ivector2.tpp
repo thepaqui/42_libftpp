@@ -42,12 +42,12 @@ IVector2<TType>::cross(const IVector2<TType>& vector)
 */
 
 template <typename TType>
-IVector2
-operator+(
+IVector2<TType>
+IVector2<TType>::operator+(
 	const IVector2& obj
 ) const
 {
-	IVector2	result;
+	IVector2<TType>	result;
 	result.x = x + obj.x;
 	result.y = y + obj.y;
 
@@ -55,12 +55,12 @@ operator+(
 }
 
 template <typename TType>
-IVector2
-operator-(
+IVector2<TType>
+IVector2<TType>::operator-(
 	const IVector2& obj
 ) const
 {
-	IVector2	result;
+	IVector2<TType>	result;
 	result.x = x - obj.x;
 	result.y = y - obj.y;
 
@@ -70,7 +70,7 @@ operator-(
 /*
 template <typename TType>
 IVector2
-operator*(
+IVector2<TType>::operator*(
 	const IVector2& obj
 ) const
 {
@@ -81,7 +81,7 @@ operator*(
 /*
 template <typename TType>
 IVector2
-operator/(
+IVector2<TType>::operator/(
 	const IVector2& obj
 ) const
 {
@@ -91,7 +91,7 @@ operator/(
 
 template <typename TType>
 bool
-operator==(
+IVector2<TType>::operator==(
 	const IVector2& obj
 ) const
 {
@@ -100,7 +100,7 @@ operator==(
 
 template <typename TType>
 bool
-operator!=(
+IVector2<TType>::operator!=(
 	const IVector2& obj
 ) const
 {
