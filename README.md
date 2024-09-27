@@ -10,10 +10,10 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ Pool
   - ❌ Data Buffer
 
-- ❌ Design Patterns
+- ⌛ Design Patterns
   - ❌ Memento
   - ❌ Observer
-  - ❌ Singleton
+  - ⌛ Singleton
   - ❌ State Machine
 
 - ❌ Thread-Safe IOStream
@@ -30,7 +30,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ❌ Server
 
 - ⌛ Mathematics
-  - ⌛ IVector2
-  - ❌ IVector3
+  - ✅ IVector2
+  - ✅ IVector3
   - ❌ Random 2D Coordinate Generator
   - ❌ Perlin Noise 2D
