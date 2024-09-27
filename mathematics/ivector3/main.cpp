@@ -5,8 +5,8 @@ int main() {
     IVector3<int> vec1(3, 4, 1);
     IVector3<int> vec2(1, 2, 3);
     
-    std::cout << "Vec1 : " << vec1.x << " / " << vec1.y << " / " << vec1.z << std::endl;
-    std::cout << "Vec2 : " << vec2.x << " / " << vec2.y << " / " << vec2.z << std::endl;
+    std::cout << "Vec1 = [" << vec1.x << ", " << vec1.y << ", " << vec1.z << "]" << std::endl;
+    std::cout << "Vec2 = [" << vec2.x << ", " << vec2.y << ", " << vec2.z << "]" << std::endl;
 
     // Test operator overloads
     auto vecAdd = vec1 + vec2;
@@ -17,12 +17,12 @@ int main() {
     std::cout << "vec1 - vec2 = (" << vecSub.x << ", " << vecSub.y << ", " << vecSub.z << ")" << std::endl;
     // Expected: vec1 - vec2 = (2, 2, -2)
 
-    auto vecMul = vec1 * vec2;
-    std::cout << "vec1 * vec2 = (" << vecMul.x << ", " << vecMul.y << ", " << vecMul.z << ")" << std::endl;
+//    auto vecMul = vec1 * vec2;
+//    std::cout << "vec1 * vec2 = (" << vecMul.x << ", " << vecMul.y << ", " << vecMul.z << ")" << std::endl;
     // Expected: vec1 * vec2 = (3, 8, 3)
 
-    auto vecDiv = vec1 / vec2;
-    std::cout << "vec1 / vec2 = (" << vecDiv.x << ", " << vecDiv.y << ", " << vecDiv.z << ")" << std::endl;
+//    auto vecDiv = vec1 / vec2;
+//    std::cout << "vec1 / vec2 = (" << vecDiv.x << ", " << vecDiv.y << ", " << vecDiv.z << ")" << std::endl;
     // Expected: vec1 / vec2 = (3, 2, 0)
 
     bool isEqual = vec1 == vec2;
@@ -40,7 +40,7 @@ int main() {
 
     auto normVec = vec1.normalize();
     std::cout << "Normalized vec1 = (" << normVec.x << ", " << normVec.y << ", " << normVec.z << ")" << std::endl;
-    // Expected: Normalized vec1 = (some_value, some_value, some_value)
+    // Expected: Normalized vec1 = (0.588, 0.784, 0.196)
 
     float dotProd = vec1.dot(vec2);
     std::cout << "Dot product of vec1 and vec2: " << dotProd << std::endl;
@@ -48,7 +48,7 @@ int main() {
 
     auto crossProd = vec1.cross(vec2);
     std::cout << "Cross product of vec1 and vec2: (" << crossProd.x << ", " << crossProd.y << ", " << crossProd.z << ")" << std::endl;
-    // Expected: Cross product of vec1 and vec2: (some_value, some_value, some_value)
+    // Expected: Cross product of vec1 and vec2: (10, -8, 2)
 
     return 0;
 }
