@@ -13,7 +13,15 @@ struct IVector2 {
 	float			dot(const IVector2& vector);
 //	IVector2		cross(const IVector2& vector);
 
-// TODO: Operator overloads
+	// Operator overloads for + - * / == !=
+
+	IVector2	operator+(const IVector2& obj) const;
+	IVector2	operator-(const IVector2& obj) const;
+//	IVector2	operator*(const IVector2& obj) const;
+//	IVector2	operator/(const IVector2& obj) const;
+
+	bool	operator==(const IVector2& obj) const;
+	bool	operator!=(const IVector2& obj) const;
 };
 
 # include "ivector2.tpp"

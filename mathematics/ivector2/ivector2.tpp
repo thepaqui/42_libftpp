@@ -25,7 +25,9 @@ IVector2<TType>::normalize()
 
 template <typename TType>
 float
-IVector2<TType>::dot(const IVector2<TType>& vector)
+IVector2<TType>::dot(
+	const IVector2<TType>& vector
+)
 {
 	return (x * vector.x) + (y * vector.y);
 }
@@ -38,5 +40,71 @@ IVector2<TType>::cross(const IVector2<TType>& vector)
 	
 }
 */
+
+template <typename TType>
+IVector2
+operator+(
+	const IVector2& obj
+) const
+{
+	IVector2	result;
+	result.x = x + obj.x;
+	result.y = y + obj.y;
+
+	return result;
+}
+
+template <typename TType>
+IVector2
+operator-(
+	const IVector2& obj
+) const
+{
+	IVector2	result;
+	result.x = x - obj.x;
+	result.y = y - obj.y;
+
+	return result;
+}
+
+/*
+template <typename TType>
+IVector2
+operator*(
+	const IVector2& obj
+) const
+{
+
+}
+*/
+
+/*
+template <typename TType>
+IVector2
+operator/(
+	const IVector2& obj
+) const
+{
+
+}
+*/
+
+template <typename TType>
+bool
+operator==(
+	const IVector2& obj
+) const
+{
+	return (x == obj.x && y == obj.y);
+}
+
+template <typename TType>
+bool
+operator!=(
+	const IVector2& obj
+) const
+{
+	return (x != obj.x || y != obj.y);
+}
 
 #endif
