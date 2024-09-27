@@ -71,6 +71,26 @@ Pool<TType>::resize(
 }
 
 template <typename TType>
+template <typename ... TArgs>
+Pool<TType>::Object
+Pool<TType>::acquire(
+	TArgs &&...p_args
+)
+{
+	if (availableObjects.empty())
+		throw NoAvailableObjectsException();
+
+	TType*	obj = availableObjects.back();
+	availableObjects.pop_back();
+
+	// Placement new reconstructs an object in the same memory location
+	new(obj) TType(std::forward<TArgs>(p_args)...);
+
+	Object	objectWrapper(this, obj);
+	return objectWrapper;
+}
+
+template <typename TType>
 void
 Pool<TType>::returnObject(
 	TType* obj
