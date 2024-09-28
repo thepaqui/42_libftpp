@@ -5,14 +5,14 @@
 
 template <typename TType>
 float
-IVector3<TType>::length()
+IVector3<TType>::length() const
 {
 	return std::sqrt((x * x) + (y * y) + (z * z));
 }
 
 template <typename TType>
 IVector3<float>
-IVector3<TType>::normalize()
+IVector3<TType>::normalize() const
 {
 	float	magnitude = length();
 
@@ -28,14 +28,16 @@ template <typename TType>
 float
 IVector3<TType>::dot(
 	const IVector3<TType>& vector
-)
+) const
 {
 	return (x * vector.x) + (y * vector.y) + (z * vector.z);
 }
 
 template <typename TType>
 IVector3<TType>
-IVector3<TType>::cross(const IVector3<TType>& vector)
+IVector3<TType>::cross(
+	const IVector3<TType>& vector
+) const
 {
 	IVector3<TType>	result;
 	result.x = (y * vector.z) - (z * vector.y);

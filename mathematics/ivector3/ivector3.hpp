@@ -9,10 +9,10 @@ struct IVector3 {
 	TType	y;
 	TType	z;
 
-	float						length();
-	IVector3<float>	normalize();
-	float						dot(const IVector3& vector);
-	IVector3				cross(const IVector3& vector);
+	float			length() const;
+	IVector3<float>	normalize() const;
+	float			dot(const IVector3& vector) const;
+	IVector3		cross(const IVector3& vector) const;
 
 	// Operator overloads for + - * / == !=
 

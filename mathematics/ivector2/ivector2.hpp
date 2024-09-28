@@ -8,10 +8,10 @@ struct IVector2 {
 	TType	x;
 	TType	y;
 
-	float						length();
-	IVector2<float>	normalize();
-	float						dot(const IVector2& vector);
-//	IVector2				cross(const IVector2& vector);
+	float			length() const;
+	IVector2<float>	normalize() const;
+	float			dot(const IVector2& vector) const;
+//	IVector2		cross(const IVector2& vector) const;
 
 	// Operator overloads for + - * / == !=
 
