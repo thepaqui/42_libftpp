@@ -5,6 +5,7 @@
 # include <memory>
 # include <new>
 # include <algorithm>
+# include <exception>
 
 template <typename TType>
 class Pool {

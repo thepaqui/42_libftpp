@@ -2,6 +2,7 @@
 # define LIBFTPP_SINGLETON_HPP
 
 # include <memory>
+# include <exception>
 
 template <typename TType>
 class Singleton {
