@@ -1,4 +1,4 @@
-#include "data_buffer.hpp" // Assuming your DataBuffer is defined in this header
+#include "data_buffer.hpp"
 #include <iostream>
 #include <string>
 #include <exception>
@@ -30,14 +30,18 @@ int main() {
     obj2.x = 99;
     obj2.y = "World";
 
-    myBuffer << obj1 << obj2;
+    std::string s1 = "Bing Boung";
+
+    myBuffer << obj1 << s1 << obj2;
 
     TestObject deserializedObj1, deserializedObj2, deserializedObj3;
+    std::string deserializedStr1;
 
     // This should work as expected
     try {
-        myBuffer >> deserializedObj1 >> deserializedObj2;
+        myBuffer >> deserializedObj1 >> deserializedStr1 >> deserializedObj2;
         std::cout << "Deserialized obj1: x = " << deserializedObj1.x << ", y = " << deserializedObj1.y << std::endl;
+        std::cout << "Deserialized s1: " << deserializedStr1 << std::endl;
         std::cout << "Deserialized obj2: x = " << deserializedObj2.x << ", y = " << deserializedObj2.y << std::endl;
     } catch (const std::exception& e) {
         std::cout << "Caught exception: " << e.what() << std::endl;
