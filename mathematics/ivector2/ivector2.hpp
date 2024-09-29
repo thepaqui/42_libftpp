@@ -8,6 +8,9 @@ struct IVector2 {
 	TType	x;
 	TType	y;
 
+	IVector2();
+	IVector2(TType xVal, TType yVal);
+
 	float			length() const;
 	IVector2<float>	normalize() const;
 	float			dot(const IVector2& vector) const;
