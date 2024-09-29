@@ -35,6 +35,14 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ Random 2D Coordinate Generator
   - ✅ Perlin Noise 2D
 
+## Bonuses
+
+- ❌ Timer
+- ❌ Chronometer
+- ❌ ObservableValue
+- ❌ Perlin Noise 3D
+- ❌ Matrix4x4
+
 ## Useful Links
 
 - [Improved 2D Perlin Noise](https://rtouti.github.io/graphics/perlin-noise-algorithm)
