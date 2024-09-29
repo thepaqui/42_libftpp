@@ -12,6 +12,7 @@ class PerlinNoise2D {
 private :
 	std::vector<int>	permutationTable;
 
+	unsigned int	randomInt(unsigned int min, unsigned int max);
 	void			shufflePermutationTable();
 	IVector2<float>	getConstantVector(const int value) const noexcept;
 	float			lerp(float t, float min, float max) const noexcept;
@@ -20,6 +21,7 @@ private :
 public :
 	PerlinNoise2D();
 	float	sample(float x, float y);
+	float	operator()(float x, float y);
 };
 
 #endif

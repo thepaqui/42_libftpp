@@ -9,14 +9,38 @@ PerlinNoise2D::PerlinNoise2D()
 		permutationTable[i] = i;
 
 	shufflePermutationTable();
+
+	permutationTable.resize(512);
+
+	for (int i = 0; i < 256; i++)
+		permutationTable[256 + i] = permutationTable[i];
+}
+
+unsigned int
+PerlinNoise2D::randomInt(
+	unsigned int min,
+	unsigned int max
+)
+{
+	if (max < min)
+		std::swap(min, max);
+
+	const int	diff = max - min + 1;
+	if (diff == 1)
+		return min;
+
+	int	result = std::rand() % diff + min;
+	return result;
 }
 
 void
 PerlinNoise2D::shufflePermutationTable()
 {
-	for (int e = permutationTable.size() - 1; e > 0; e--) {
-		const float	index = std::round(std::rand() * (e - 1));
-		std::swap(permutationTable[e], permutationTable[index]);
+	for (int e = permutationTable.size() - 1; e >= 0; e--) {
+		const int	index = randomInt(0, 255);
+		const int	tmp = permutationTable[e];
+		permutationTable[e] = permutationTable[index];
+		permutationTable[index] = tmp;
 	}
 }
 
@@ -47,8 +71,6 @@ PerlinNoise2D::lerp(
 	float max
 ) const noexcept
 {
-	if (min > max)
-		std::swap(min, max);
 	return min + t * (max - min);
 }
 
@@ -92,4 +114,13 @@ PerlinNoise2D::sample(
 		lerp(v, bottomLeftDot, topLeftDot),
 		lerp(v, bottomRightDot, topRightDot)
 	);
+}
+
+float
+PerlinNoise2D::operator()(
+	float x,
+	float y
+)
+{
+	return sample(x, y);
 }

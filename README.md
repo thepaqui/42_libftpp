@@ -33,7 +33,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ IVector2
   - ✅ IVector3
   - ❌ Random 2D Coordinate Generator
-  - ⌛ Perlin Noise 2D
+  - ✅ Perlin Noise 2D
 
 ## Useful Links
 
