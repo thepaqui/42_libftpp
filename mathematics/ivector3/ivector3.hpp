@@ -9,6 +9,9 @@ struct IVector3 {
 	TType	y;
 	TType	z;
 
+	IVector3();
+	IVector3(TType xVal, TType yVal, TType zVal);
+
 	float			length() const;
 	IVector3<float>	normalize() const;
 	float			dot(const IVector3& vector) const;

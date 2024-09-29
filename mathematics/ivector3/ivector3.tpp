@@ -4,6 +4,26 @@
 # include "ivector3.hpp"
 
 template <typename TType>
+IVector3<TType>::IVector3()
+{
+	x = 0;
+	y = 0;
+	z = 0;
+}
+
+template <typename TType>
+IVector3<TType>::IVector3(
+	TType xVal,
+	TType yVal,
+	TType zVal
+)
+{
+	x = xVal;
+	y = yVal;
+	z = zVal
+}
+
+template <typename TType>
 float
 IVector3<TType>::length() const
 {
