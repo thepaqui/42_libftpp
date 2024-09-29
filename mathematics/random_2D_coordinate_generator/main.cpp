@@ -5,6 +5,7 @@
 
 int main() {
     Random2DCoordinateGenerator randomGenerator;
+    std::cout << "Seed = " << randomGenerator.seed() << std::endl;
 
     // Store a list of coordinates to test
     std::vector<std::pair<long long, long long>> coordinates = {
@@ -26,6 +27,10 @@ int main() {
         std::cout << "Random number using coordinates (" << x << ", " << y << "): " << randomNumber << std::endl;
     }
     std::cout << std::endl;
+
+    // randomGenerator.setSeed(5318008);
+
+    std::cout << "Seed = " << randomGenerator.seed() << std::endl;
 
     std::cout << "Second round of generation:" << std::endl;
     for (size_t i = 0; i < coordinates.size(); ++i) {
