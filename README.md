@@ -10,11 +10,11 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ Pool
   - ✅ Data Buffer
 
-- ⌛ Design Patterns
+- ✅ Design Patterns
   - ✅ Memento
   - ✅ Observer
   - ✅ Singleton
-  - ❌ State Machine
+  - ✅ State Machine
 
 - ❌ Thread-Safe IOStream
 
