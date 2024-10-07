@@ -11,6 +11,7 @@ template <typename TEvent>
 class Observer {
 private :
 	std::map<TEvent, std::vector<Callback>>	eventMap;
+
 public :
 	void	subscribe(const TEvent& event, const Callback& lambda);
 	void	notify(const TEvent& event);
