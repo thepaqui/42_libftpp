@@ -41,7 +41,6 @@ public :
 	Object	acquire(TArgs&&... p_args);
 
 	/* Exceptions */
-	// TODO: See if some standard exceptions might fit better
 	class NoAvailableObjectsException : public std::exception {
 	public :
 		const char*	what() const noexcept { return "Pool: No available objects."; }

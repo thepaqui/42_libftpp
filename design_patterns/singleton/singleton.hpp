@@ -23,7 +23,6 @@ public :
 	static void	instantiate(TArgs&&... p_args);
 
 	/* Exceptions */
-	// TODO: See if some standard exceptions might fit better
 	class NoInstanceException : public std::exception {
 	public :
 		const char*	what() const noexcept { return "Singleton: Instance not yet created."; }
