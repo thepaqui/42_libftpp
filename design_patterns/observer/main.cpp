@@ -27,7 +27,8 @@ int main() {
 
     // Triggering EVENT_ONE
     std::cout << "Notify EVENT_ONE" << std::endl;
-    observer.notify(EventType::EVENT_ONE);  // Output: "Event One triggered"
+    observer.notify(EventType::EVENT_ONE);
+    // Output: "Event One triggered"
 
     // Triggering EVENT_TWO
     std::cout << "Notify EVENT_TWO" << std::endl;
