@@ -30,6 +30,7 @@ public :
 	friend DataBuffer&	operator>>(DataBuffer& dataBuffer, TType& obj);
 
 	/* Exceptions */
+	// TODO: See if some standard exception might fit better
 	class NotEnoughBytesToDeserializeException : public std::exception {
 	public :
 		const char*	what() const noexcept { return "DataBuffer: Not enough bytes to deserialize."; }
