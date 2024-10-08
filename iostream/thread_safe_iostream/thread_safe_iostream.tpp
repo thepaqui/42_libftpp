@@ -9,15 +9,10 @@ ThreadSafeIOStream::operator<<(
 	const TType& data
 )
 {
-	// A lock_guard's destructor releases the mutex
-	// So outputMutex will be unlocked when lock goes out of scope
-	std::lock_guard<std::mutex>	lock(outputMutex);
+	outputBuffer << data;
 
-	// Using ostringstream to concatenate prefix
-	// and data before sending to cout
-	std::ostringstream	oss;
-	oss << outputPrefix << data;
-	std::cout << oss.str();
+	if (outputUnitBuf)
+		flush();
 
 	return *this;
 }
@@ -29,9 +24,18 @@ ThreadSafeIOStream::operator>>(
 )
 {
 	std::lock_guard<std::mutex>	lock(outputMutex);
-
 	std::cin >> data;
+	return *this;
+}
 
+template <typename TType>
+ThreadSafeIOStream&
+ThreadSafeIOStream::operator>>(
+	TType&& manip
+)
+{
+	std::lock_guard<std::mutex>	lock(outputMutex);
+	std::cin >> std::forward<TType>(manip);
 	return *this;
 }
 
