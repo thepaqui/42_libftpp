@@ -2,8 +2,6 @@
 #include <thread>
 #include "thread_safe_iostream.hpp"
 
-ThreadSafeIOStream threadSafeCout;
-
 void printNumbers(const std::string& p_prefix) {
     threadSafeCout.setPrefix(p_prefix);
     for (int i = 1; i <= 5; ++i) {
