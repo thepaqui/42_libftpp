@@ -16,7 +16,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ Singleton
   - ✅ State Machine
 
-- ❌ Thread-Safe IOStream
+- ⌛ Thread-Safe IOStream
 
 - ❌ Threading
   - ❌ Thread-Safe Queue
