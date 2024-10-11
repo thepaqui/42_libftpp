@@ -8,7 +8,7 @@
 
 class ThreadSafeIOStream {
 private :
-	static std::mutex						outputMutex;
+	static std::mutex						mtx;
 	thread_local static std::string			outputPrefix;
 	thread_local static std::ostringstream	outputBuffer;
 	thread_local static bool				outputUnitBuf;

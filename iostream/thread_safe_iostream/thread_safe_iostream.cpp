@@ -1,6 +1,6 @@
 #include "thread_safe_iostream.hpp"
 
-std::mutex						ThreadSafeIOStream::outputMutex;
+std::mutex						ThreadSafeIOStream::mtx;
 thread_local std::string		ThreadSafeIOStream::outputPrefix;
 thread_local std::ostringstream	ThreadSafeIOStream::outputBuffer;
 thread_local bool				ThreadSafeIOStream::outputUnitBuf = false;
@@ -56,8 +56,8 @@ ThreadSafeIOStream::operator>>(
 	std::istream& (*manip)(std::istream&)
 )
 {
-	std::lock_guard<std::mutex>	lock(outputMutex);
 	manip(std::cin);
+	std::lock_guard<std::mutex>	lock(mtx);
 	return *this;
 }
 
@@ -69,7 +69,7 @@ ThreadSafeIOStream::flush()
 	outputBuffer.clear();
 
 	// A lock_guard's destructor releases the mutex
-	// So outputMutex will be unlocked when lock goes out of scope
-	std::lock_guard<std::mutex>	lock(outputMutex);
+	// So mtx will be unlocked when lock goes out of scope
+	std::lock_guard<std::mutex>	lock(mtx);
 	std::cout << output << std::flush;
 }
