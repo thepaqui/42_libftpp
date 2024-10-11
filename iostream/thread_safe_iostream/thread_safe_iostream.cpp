@@ -4,6 +4,7 @@ std::mutex						ThreadSafeIOStream::mtx;
 thread_local std::string		ThreadSafeIOStream::outputPrefix;
 thread_local std::ostringstream	ThreadSafeIOStream::outputBuffer;
 thread_local bool				ThreadSafeIOStream::outputUnitBuf = false;
+thread_local std::istringstream	ThreadSafeIOStream::inputBuffer;
 
 thread_local ThreadSafeIOStream	threadSafeCout;
 
@@ -56,8 +57,16 @@ ThreadSafeIOStream::operator>>(
 	std::istream& (*manip)(std::istream&)
 )
 {
-	manip(std::cin);
-	std::lock_guard<std::mutex>	lock(mtx);
+	manip(inputBuffer);
+	return *this;
+}
+
+ThreadSafeIOStream&
+ThreadSafeIOStream::operator>>(
+	std::ios_base& (*manip)(std::ios_base&)
+)
+{
+	manip(inputBuffer);
 	return *this;
 }
 

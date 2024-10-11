@@ -23,8 +23,14 @@ ThreadSafeIOStream::operator>>(
 	TType& data
 )
 {
-	std::lock_guard<std::mutex>	lock(mtx);
-	std::cin >> data;
+	std::string	line;
+	{
+		std::lock_guard<std::mutex>	lock(mtx);
+		std::getline(std::cin, line);
+	}
+	inputBuffer.str(line);
+	inputBuffer.clear();
+	inputBuffer >> data;
 	return *this;
 }
 
@@ -34,8 +40,7 @@ ThreadSafeIOStream::operator>>(
 	TType&& manip
 )
 {
-	std::lock_guard<std::mutex>	lock(mtx);
-	std::cin >> std::forward<TType>(manip);
+	inputBuffer >> std::forward<TType>(manip);
 	return *this;
 }
 

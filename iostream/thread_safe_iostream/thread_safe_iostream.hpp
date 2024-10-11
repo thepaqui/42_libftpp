@@ -12,6 +12,7 @@ private :
 	thread_local static std::string			outputPrefix;
 	thread_local static std::ostringstream	outputBuffer;
 	thread_local static bool				outputUnitBuf;
+	thread_local static std::istringstream	inputBuffer;
 
 	void	flush();
 
@@ -27,6 +28,8 @@ public :
 
 	template <typename TType>
 	ThreadSafeIOStream& operator>>(TType& data);
+	// For manipulators like unitbuf or hex
+	ThreadSafeIOStream& operator>>(std::ios_base& (*manip)(std::ios_base&));
 	// For ws manipulator
 	ThreadSafeIOStream& operator>>(std::istream& (*manip)(std::istream&));
 	// For other manipulators

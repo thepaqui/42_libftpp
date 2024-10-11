@@ -36,6 +36,11 @@ void printStuff(const std::string& p_prefix) {
     threadSafeCout << "Enter string: " << std::flush;
     threadSafeCout >> std::setw(5) >> strInput;
     threadSafeCout << "You entered string: \'" << strInput << "\'" << std::endl;
+
+    double floatInput;
+    threadSafeCout << "Enter float number: " << std::flush;
+    threadSafeCout >> floatInput;
+    threadSafeCout << "You entered float number: " << floatInput << std::endl;
 }
 
 int main() {

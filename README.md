@@ -45,4 +45,5 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 ## Useful Links
 
+- [I/O Manipulators](https://en.cppreference.com/w/cpp/io/manip)
 - [Improved 2D Perlin Noise](https://rtouti.github.io/graphics/perlin-noise-algorithm)
