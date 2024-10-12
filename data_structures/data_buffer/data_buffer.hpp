@@ -6,7 +6,7 @@
 # include <cstddef>
 # include <cstring>
 # include <string>
-# include <exception>
+# include <stdexcept>
 
 class DataBuffer {
 private :
@@ -30,9 +30,10 @@ public :
 	friend DataBuffer&	operator>>(DataBuffer& dataBuffer, TType& obj);
 
 	/* Exceptions */
-	class NotEnoughBytesToDeserializeException : public std::exception {
+	class NotEnoughBytesToDeserializeException : public std::runtime_error {
 	public :
-		const char*	what() const noexcept { return "DataBuffer: Not enough bytes to deserialize."; }
+		explicit NotEnoughBytesToDeserializeException()
+		: runtime_error("DataBuffer: Not enough bytes to deserialize.") {}
 	};
 };
 

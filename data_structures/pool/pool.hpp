@@ -6,6 +6,7 @@
 # include <new>
 # include <algorithm>
 # include <exception>
+# include <stdexcept>
 
 template <typename TType>
 class Pool {
@@ -41,14 +42,16 @@ public :
 	Object	acquire(TArgs&&... p_args);
 
 	/* Exceptions */
-	class NoAvailableObjectsException : public std::exception {
+	class NoAvailableObjectsException : public std::runtime_error {
 	public :
-		const char*	what() const noexcept { return "Pool: No available objects."; }
+		explicit NoAvailableObjectsException()
+		: runtime_error("Pool: No available objects.") {}
 	};
 
-	class NoAvailableObjectsToRemoveException : public std::exception {
+	class NoAvailableObjectsToRemoveException : public std::runtime_error {
 	public :
-		const char*	what() const noexcept { return "Pool: No available objects to remove."; }
+		explicit NoAvailableObjectsToRemoveException()
+		: runtime_error("Pool: No available objects to remove.") {}
 	};
 
 	class NoAllocatedObjectsToRemoveException : public std::exception {
