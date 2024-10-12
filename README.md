@@ -19,7 +19,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 - ✅ Thread-Safe IOStream
 
 - ⌛ Threading
-  - ⌛ Thread-Safe Queue
+  - ✅ Thread-Safe Queue
   - ✅ Thread
   - ❌ Worker Pool
   - ❌ Persistent Worker
