@@ -25,7 +25,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ Persistent Worker
 
 - ⌛ Network
-  - ❌ Message
+  - ✅ Message
   - ❌ Client
   - ❌ Server
 
