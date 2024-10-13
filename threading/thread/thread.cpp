@@ -3,7 +3,7 @@
 
 Thread::Thread(
 	const std::string& name,
-	std::function<void()> functToExecute
+	Callback functToExecute
 )
 : threadName("[" + name + "] "), func(std::move(functToExecute)), running(false)
 {}

@@ -6,16 +6,18 @@
 # include <thread>
 # include <atomic>
 
+using Callback = std::function<void()>;
+
 class Thread {
 private :
 	std::thread				thread;
 	std::string				threadName;
-	std::function<void()>	func;
+	Callback				func;
 	// Atomic bool for thread-safety on r/w operations
 	std::atomic<bool>		running;
 
 public :
-	Thread(const std::string& name, std::function<void()> functToExecute);
+	Thread(const std::string& name, Callback functToExecute);
 
 	void	start();
 	void	stop();
