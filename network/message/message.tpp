@@ -10,7 +10,8 @@ operator<<(
 	const TType& obj
 )
 {
-	data << obj;
+	msg.data << obj;
+	return msg;
 }
 
 template <typename TType>
@@ -20,7 +21,8 @@ operator>>(
 	TType& obj
 )
 {
-	data >> obj;
+	msg.data >> obj;
+	return msg;
 }
 
 #endif
