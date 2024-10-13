@@ -1,5 +1,5 @@
 #include "server.hpp"
-#include "thread_safe_iostream.hpp"
+#include "../../iostream/iostream.hpp"
 #include <string>
 
 int main() {

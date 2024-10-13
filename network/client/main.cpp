@@ -1,10 +1,11 @@
 #include "client.hpp"
-#include "thread_safe_iostream.hpp"
+#include "../../iostream/iostream.hpp"
 #include <string>
 
 int main() {
     Client client;
 
+    // TODO: THIS MESSAGE SHOULD NOT BE CONST DUMBASSES
 	client.defineAction(3, [](const Message& msg){
         int doubledValue;
         msg >> doubledValue;
