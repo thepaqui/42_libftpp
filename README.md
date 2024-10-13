@@ -18,13 +18,13 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 - ✅ Thread-Safe IOStream
 
-- ⌛ Threading
+- ✅ Threading
   - ✅ Thread-Safe Queue
   - ✅ Thread
-  - ❌ Worker Pool
+  - ✅ Worker Pool
   - ✅ Persistent Worker
 
-- ❌ Network
+- ⌛ Network
   - ❌ Message
   - ❌ Client
   - ❌ Server
@@ -39,7 +39,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 - ❌ Timer
 - ❌ Chronometer
-- ❌ ObservableValue
+- ❌ Observable Value
 - ❌ Perlin Noise 3D
 - ❌ Matrix4x4
 
