@@ -29,6 +29,9 @@ public :
 	template <typename TType>
 	friend DataBuffer&	operator>>(DataBuffer& dataBuffer, TType& obj);
 
+	std::vector<std::byte>&			data() noexcept;
+	const std::vector<std::byte>&	data() const noexcept;
+
 	/* Exceptions */
 	class NotEnoughBytesToDeserializeException : public std::runtime_error {
 	public :

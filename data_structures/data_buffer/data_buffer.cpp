@@ -28,3 +28,15 @@ DataBuffer::deserialize(
 	str.assign(bytesAsStr, size);
 	buffer.erase(buffer.begin(), buffer.begin() + size);
 }
+
+std::vector<std::byte>&
+DataBuffer::data() noexcept
+{
+	return buffer;
+}
+
+const std::vector<std::byte>&
+DataBuffer::data() const noexcept
+{
+	return buffer;
+}
