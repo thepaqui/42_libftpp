@@ -3,37 +3,53 @@
 #include <string>
 
 int main() {
-    Client client;
+	Client client;
 
-    // TODO: THIS MESSAGE SHOULD NOT BE CONST DUMBASSES
-	client.defineAction(3, [](const Message& msg){
-        int doubledValue;
-        msg >> doubledValue;
-        threadSafeCout << "Received a doubled value: " << doubledValue << std::endl;
-    });
+	client.defineAction(3, [](Message& msg){
+		int doubledValue;
+		msg >> doubledValue;
+		threadSafeCout << "Received a doubled value: " << doubledValue << std::endl;
+	});
 
-    // Connect to the server
-    client.connect("localhost", 8080);
+	try {
+		// Connect to the server
+		client.connect("localhost", 8080);
+	} catch (const std::exception &e) {
+		threadSafeCout << e.what() << std::endl;
+	}
 
-    // Send a message of type 1 (int)
-    Message message1(1);
-    message1 << 42;
-    client.send(message1);
+	// Send a message of type 1 (int)
+	Message message1(1);
+	message1 << 42;
+	try {
+		client.send(message1);
+	} catch (const std::exception& e) {
+		threadSafeCout << e.what() << std::endl;
+	}
 
-    // Send a message of type 2 (size_t followed by characters)
-    Message message2(2);
-    std::string str = "Hello";
-    message2 << str.size();
-    for (char c : str) {
-        message2 << c;
-    }
-    client.send(message2);
+	// Send a message of type 2 (size_t followed by characters)
+	Message message2(2);
+	std::string str = "Hello";
+	message2 << str.size();
+	for (char c : str) {
+		message2 << c;
+	}
+	try {
+		client.send(message2);
+	} catch (const std::exception& e) {
+		threadSafeCout << e.what() << std::endl;
+	}
 
 	bool quit = false;
 
 	while (!quit)
 	{
-		client.update();
+		try {
+			client.update();
+		} catch (const std::exception& e) {
+			threadSafeCout << e.what() << std::endl;
+			break ;
+		}
 
 		threadSafeCout << "Client updated." << std::endl;
 		threadSafeCout << "Available operations :" << std::endl;
@@ -44,15 +60,16 @@ int main() {
 		std::getline(std::cin, input);
 
 		std::transform(input.begin(), input.end(), input.begin(), 
-		               [](unsigned char c){ return std::tolower(c); });
+			[](unsigned char c){ return std::tolower(c); });
 
-		if (input == "quit" || (input.length() == 1 && input[0] == 'q')) {
-		    quit = true;
+		if (input == "quit" || input == "q") {
+			quit = true;
 		}
 	}
 
-    // Disconnect from the server
-    client.disconnect();
+	// Disconnect from the server
+	client.disconnect();
+	threadSafeCout << "Client disconnected." << std::endl;
 
-    return 0;
+	return 0;
 }
