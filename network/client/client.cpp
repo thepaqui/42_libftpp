@@ -55,6 +55,24 @@ Client::connect(
 			close(sockfd);
 			throw ConnectionFailedException("Failed to connect");
 		}
+
+		struct pollfd	pfd = { sockfd, POLLOUT, 0 };
+		int				pollResult = poll(&pfd, 1, 5000);
+		if (pollResult == 0) {
+			close(sockfd);
+			throw ConnectionFailedException("Failed to connect (timeout)");
+		} else if (pollResult < 0 || !(pfd.revents & POLLOUT)) {
+			close(sockfd);
+			throw ConnectionFailedException("Failed to connect (poll error)");
+		}
+
+		int			error = 0;
+		socklen_t	len = sizeof(error);
+		if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &error, &len) < 0
+		|| error != 0) {
+			close(sockfd);
+			throw ConnectionFailedException("Failed to connect: " + std::string(strerror(error)));
+		}
 	}
 
 	isConnected = true;
