@@ -116,6 +116,8 @@ Pool<TType>::Object::Object(
 template <typename TType>
 Pool<TType>::Object::~Object()
 {
+	// Calling destructor without deallocating
+	object->~TType();
 	// Pool should never be null here, the check is only for cleanliness
 	if (pool)
 		pool->returnObject(object);

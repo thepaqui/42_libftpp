@@ -45,6 +45,7 @@ int main() {
 		obj2->sayHello(); // Should also output: "Hello from TestObject"
 		obj2->printInfo(); // Should output: "TestObject Info [0, 0]"
 		// obj2 is released back to the pool when it goes out of scope
+		// Destructor should be called here!
 	}
 
 	// Acquire another object; this should give us the object that obj2 pointed to
@@ -93,7 +94,9 @@ int main() {
 	}
 
 	// obj1 and obj3 are released back to the pool when the program ends
-	// Should output the 2 "TestObject default destructor"
+	// so 2 destructor calls without deallocation.
+	// And myPool goes out of scope so 2 more destructor calls WITH
+	// deallocation this time.
 	return 0;
 }
 
