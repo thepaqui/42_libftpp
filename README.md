@@ -24,10 +24,10 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
   - ✅ Worker Pool
   - ✅ Persistent Worker
 
-- ⌛ Network
+- ✅ Network
   - ✅ Message
   - ✅ Client
-  - ⌛ Server
+  - ✅ Server
 
 - ✅ Mathematics
   - ✅ IVector2
@@ -39,7 +39,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 - ❌ Timer
 - ❌ Chronometer
-- ❌ Observable Value
+- ⌛ Observable Value
 - ❌ Perlin Noise 3D
 - ❌ Matrix4x4
 
