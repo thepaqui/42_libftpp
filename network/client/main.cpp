@@ -71,7 +71,7 @@ int main() {
 		input = "";
 		std::getline(std::cin, input);
 
-		std::transform(input.begin(), input.end(), input.begin(), 
+		std::transform(input.begin(), input.end(), input.begin(),
 			[](unsigned char c){ return std::tolower(c); });
 	}
 

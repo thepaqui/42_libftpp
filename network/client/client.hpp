@@ -7,6 +7,7 @@
 # include <functional>
 # include <memory>
 # include <vector>
+# include <queue>
 # include <atomic>
 # include <thread>
 # include <mutex>
@@ -17,7 +18,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <netdb.h>
-# include <poll.h>
+# include <sys/select.h>
 
 class Client {
 public :
@@ -34,9 +35,20 @@ public :
 
 	void	update();
 
-	/* Exceptions */
-
 private :
+	struct ClientBuf {
+		enum State {
+			NOSIZE,
+			SIZE,
+			MESSAGE
+		};
+		State		state;
+		size_t		size;
+		std::string	data;
+		ssize_t		bytesRead;
+		size_t		totalBytes = 0;
+	};
+
 	int					sockfd;
 	std::atomic<bool>	isConnected;
 	std::atomic<bool>	shouldEnd{false};
@@ -44,10 +56,13 @@ private :
 	std::thread				receiver;
 	std::mutex				mtx;
 	std::vector<Message>	msgs;
+	std::queue<Message>		msgsToSend;
 
 	std::unordered_map<Message::Type, Action>	actions;
 
 	void	receiveMsgs();
+	void	receiveMsg(ClientBuf& clientBuf);
+	void	sendMsg(const Message& message);
 
 public :
 	/* Exceptions */

@@ -56,14 +56,21 @@ Client::connect(
 			throw ConnectionFailedException("Failed to connect");
 		}
 
-		struct pollfd	pfd = { sockfd, POLLOUT, 0 };
-		int				pollResult = poll(&pfd, 1, 5000);
-		if (pollResult == 0) {
+		fd_set	writefds;
+		FD_ZERO(&writefds);
+		FD_SET(sockfd, &writefds);
+
+		struct timeval timeout;
+		timeout.tv_sec = 5;
+		timeout.tv_usec = 0;
+
+		int	selectResult = select(sockfd + 1, nullptr, &writefds, nullptr, &timeout);
+		if (selectResult == 0) {
 			close(sockfd);
 			throw ConnectionFailedException("Failed to connect (timeout)");
-		} else if (pollResult < 0 || !(pfd.revents & POLLOUT)) {
+		} else if (selectResult < 0 || !FD_ISSET(sockfd, &writefds)) {
 			close(sockfd);
-			throw ConnectionFailedException("Failed to connect (poll error)");
+			throw ConnectionFailedException("Failed to connect (select error)");
 		}
 
 		int			error = 0;
@@ -101,14 +108,8 @@ Client::send(
 	if (!isConnected)
 		throw NotConnectedException();
 
-	std::string	data = message.serialize();
-	size_t		size = data.size();
-
-	if (::send(sockfd, &size, sizeof(size), 0) < 0)
-		throw SendingFailedException();
-
-	if (::send(sockfd, data.c_str(), size, 0) < 0)
-		throw SendingFailedException();
+	std::lock_guard<std::mutex>	lock(mtx);
+	msgsToSend.push(message);
 }
 
 void
@@ -129,99 +130,139 @@ Client::update()
 
 	if (shouldEnd) {
 		disconnect();
-		return ;
+		throw NotConnectedException();
 	}
 
-	std::vector<Message>	processingList;
+	std::vector<Message>						processingList;
+	std::unordered_map<Message::Type, Action>	actionsList;
 
 	{
 		std::lock_guard<std::mutex>	lock(mtx);
 		processingList.swap(msgs);
+		actionsList = actions;
 	}
 
-	for (Message& message : processingList) {
-		auto	it = actions.find(message.type());
+	for (Message& msg : processingList) {
+		auto	it = actionsList.find(msg.type());
 
-		if (it != actions.end())
-			it->second(message);
+		if (it != actionsList.end())
+			it->second(msg);
 	}
+}
+
+void
+Client::receiveMsg(ClientBuf& clientBuf)
+{
+	if (clientBuf.state == ClientBuf::NOSIZE) {
+		clientBuf.bytesRead = recv(
+			sockfd,
+			&clientBuf.size + clientBuf.totalBytes,
+			sizeof(clientBuf.size) - clientBuf.totalBytes,
+			0
+		);
+
+		if (clientBuf.bytesRead <= 0) {
+			shouldEnd = true;
+			return ;
+		}
+
+		clientBuf.totalBytes += clientBuf.bytesRead;
+		if (clientBuf.totalBytes < sizeof(clientBuf.size))
+			return ;
+
+		clientBuf.state = ClientBuf::SIZE;
+		clientBuf.totalBytes = 0;
+		clientBuf.data.resize(clientBuf.size, '\0');
+
+	} else if (clientBuf.state == ClientBuf::SIZE) {
+		clientBuf.bytesRead = recv(
+			sockfd,
+			clientBuf.data.data() + clientBuf.totalBytes,
+			clientBuf.size - clientBuf.totalBytes,
+			0
+		);
+
+		if (clientBuf.bytesRead <= 0) {
+			shouldEnd = true;
+			return ;
+		}
+
+		clientBuf.totalBytes += clientBuf.bytesRead;
+		if (clientBuf.totalBytes < clientBuf.size)
+			return ;
+
+		clientBuf.state = ClientBuf::MESSAGE;
+		clientBuf.totalBytes = 0;
+	}
+
+	if (clientBuf.state == ClientBuf::MESSAGE) {
+		clientBuf.state = ClientBuf::NOSIZE;
+		Message	msg(0);
+		try {
+			msg.deserialize(clientBuf.data);
+		} catch (const std::exception& e) {
+			return ;
+		}
+
+		std::lock_guard<std::mutex>	lock(mtx);
+		msgs.push_back(std::move(msg));
+	}
+}
+
+void
+Client::sendMsg(
+	const Message& message
+)
+{
+	if (!isConnected)
+		throw NotConnectedException();
+
+	std::string	data = message.serialize();
+	size_t		size = data.size();
+
+	if (::send(sockfd, &size, sizeof(size), 0) < 0)
+		throw SendingFailedException();
+
+	if (::send(sockfd, data.c_str(), size, 0) < 0)
+		throw SendingFailedException();
 }
 
 void
 Client::receiveMsgs()
 {
-	enum State {
-		NOSIZE,
-		SIZE,
-		MESSAGE
-	};
-	State		state = NOSIZE;
-	size_t		size;
-	std::string	data;
-	ssize_t		bytesRead;
-	size_t		totalBytes = 0;
+	ClientBuf	clientBuf;
+
+	fd_set	readfds;
+	fd_set	writefds;
 
 	while (isConnected) {
-		if (state == NOSIZE) {
-			bytesRead = recv(
-				sockfd,
-				&size + totalBytes,
-				sizeof(size) - totalBytes,
-				0
-			);
+		FD_ZERO(&readfds);
+		FD_ZERO(&writefds);
+		FD_SET(sockfd, &readfds);
+		FD_SET(sockfd, &writefds);
+		int	max_fd = sockfd;
 
-			if (bytesRead == -1 && (errno == EWOULDBLOCK || errno == EAGAIN)) {
-				std::this_thread::sleep_for(std::chrono::milliseconds(100));
-				continue ;
-			} else if (bytesRead <= 0) {
-				shouldEnd = true;
-				break ;
-			}
+		int	activity = select(max_fd + 1, &readfds, &writefds, nullptr, nullptr);
+		if (activity < 0)
+			continue ;
 
-			totalBytes += bytesRead;
-			if (totalBytes < sizeof(size))
-				continue ;
-
-			state = SIZE;
-			totalBytes = 0;
-			data.resize(size, '\0');
+		if (!shouldEnd && FD_ISSET(sockfd, &readfds)) {
+			receiveMsg(clientBuf);
 		}
 
-		if (state == SIZE) {
-			bytesRead = recv(
-				sockfd,
-				data.data() + totalBytes,
-				size - totalBytes,
-				0
-			);
-
-			if (bytesRead == -1 && (errno == EWOULDBLOCK || errno == EAGAIN)) {
-				std::this_thread::sleep_for(std::chrono::milliseconds(100));
-				continue ;
-			} else if (bytesRead <= 0) {
-				shouldEnd = true;
-				break ;
-			}
-
-			totalBytes += bytesRead;
-			if (totalBytes < size)
-				continue ;
-
-			state = MESSAGE;
-			totalBytes = 0;
-		}
-
-		if (state == MESSAGE) {
-			state = NOSIZE;
+		if (!shouldEnd && FD_ISSET(sockfd, &writefds)) {
 			Message	msg(0);
-			try {
-				msg.deserialize(data);
-			} catch (const std::exception& e) {
-				continue ;
+			bool	send = false;
+			{
+				std::lock_guard<std::mutex>	lock(mtx);
+				if (!msgsToSend.empty()) {
+					msg = msgsToSend.front();
+					msgsToSend.pop();
+					send = true;
+				}
 			}
-
-			std::lock_guard<std::mutex>	lock(mtx);
-			msgs.push_back(std::move(msg));
+			if (send)
+				sendMsg(msg);
 		}
 	}
 }
