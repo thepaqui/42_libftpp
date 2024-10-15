@@ -15,6 +15,8 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <netdb.h>
 
 class Client {
 public :

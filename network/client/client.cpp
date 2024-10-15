@@ -22,18 +22,39 @@ Client::connect(
 	if (sockfd < 0)
 		throw ConnectionFailedException("Failed to create socket");
 
+	int flags = fcntl(sockfd, F_GETFL, 0);
+	if (flags == -1 || fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) {
+		close(sockfd);
+		throw ConnectionFailedException("Failed to set non-blocking mode");
+	}
+
 	sockaddr_in	servAddr{};
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_port = htons(static_cast<uint16_t>(port));
 
-	if (inet_pton(AF_INET, address.c_str(), &servAddr.sin_addr) <= 0) {
+	if (address == "localhost") {
+		struct addrinfo	hints{}, *res;
+		hints.ai_family = AF_INET;
+		hints.ai_socktype = SOCK_STREAM;
+
+		int	status = getaddrinfo("localhost", nullptr, &hints, &res);
+		if (status != 0) {
+			close(sockfd);
+			throw ConnectionFailedException("Failed to resolve localhost");
+		}
+
+		servAddr.sin_addr = reinterpret_cast<sockaddr_in*>(res->ai_addr)->sin_addr;
+		freeaddrinfo(res);
+	} else if (inet_pton(AF_INET, address.c_str(), &servAddr.sin_addr) <= 0) {
 		close(sockfd);
 		throw ConnectionFailedException("Invalid address");
 	}
 
 	if (::connect(sockfd, reinterpret_cast<sockaddr*>(&servAddr), sizeof(servAddr)) < 0) {
-		close(sockfd);
-		throw ConnectionFailedException("Failed to connect");
+		if (errno != EINPROGRESS) {
+			close(sockfd);
+			throw ConnectionFailedException("Failed to connect");
+		}
 	}
 
 	isConnected = true;
@@ -111,26 +132,78 @@ Client::update()
 void
 Client::receiveMsgs()
 {
-	ssize_t	bytesRead;
+	enum State {
+		NOSIZE,
+		SIZE,
+		MESSAGE
+	};
+	State		state = NOSIZE;
+	size_t		size;
+	std::string	data;
+	ssize_t		bytesRead;
+	size_t		totalBytes = 0;
+
 	while (isConnected) {
-		size_t	size;
-		bytesRead = recv(sockfd, &size, sizeof(size), 0);
-		if (bytesRead <= 0) {
-			shouldEnd = true;
-			break ;
+		if (state == NOSIZE) {
+			bytesRead = recv(
+				sockfd,
+				&size + totalBytes,
+				sizeof(size) - totalBytes,
+				0
+			);
+
+			if (bytesRead == -1 && (errno == EWOULDBLOCK || errno == EAGAIN)) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+				continue ;
+			} else if (bytesRead <= 0) {
+				shouldEnd = true;
+				break ;
+			}
+
+			totalBytes += bytesRead;
+			if (totalBytes < sizeof(size))
+				continue ;
+
+			state = SIZE;
+			totalBytes = 0;
+			data.resize(size, '\0');
 		}
 
-		std::string	data(size, '\0');
-		bytesRead = recv(sockfd, data.data(), size, 0);
-		if (bytesRead <= 0) {
-			shouldEnd = true;
-			break ;
+		if (state == SIZE) {
+			bytesRead = recv(
+				sockfd,
+				data.data() + totalBytes,
+				size - totalBytes,
+				0
+			);
+
+			if (bytesRead == -1 && (errno == EWOULDBLOCK || errno == EAGAIN)) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+				continue ;
+			} else if (bytesRead <= 0) {
+				shouldEnd = true;
+				break ;
+			}
+
+			totalBytes += bytesRead;
+			if (totalBytes < size)
+				continue ;
+
+			state = MESSAGE;
+			totalBytes = 0;
 		}
 
-		Message	msg(0);
-		msg.deserialize(data);
+		if (state == MESSAGE) {
+			state = NOSIZE;
+			Message	msg(0);
+			try {
+				msg.deserialize(data);
+			} catch (const std::exception& e) {
+				continue ;
+			}
 
-		std::lock_guard<std::mutex>	lock(mtx);
-		msgs.push_back(std::move(msg));
+			std::lock_guard<std::mutex>	lock(mtx);
+			msgs.push_back(std::move(msg));
+		}
 	}
 }
