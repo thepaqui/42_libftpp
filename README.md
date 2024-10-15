@@ -26,8 +26,8 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 - ⌛ Network
   - ✅ Message
-  - ⌛ Client
-  - ❌ Server
+  - ✅ Client
+  - ⌛ Server
 
 - ✅ Mathematics
   - ✅ IVector2
