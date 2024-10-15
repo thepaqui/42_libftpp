@@ -34,7 +34,7 @@ public :
 		friend class Pool;
 
 	public :
-		~Object(); // TODO: Call TType's destructor in here but no deallocation
+		~Object();
 		TType*	operator->();
 	};
 
