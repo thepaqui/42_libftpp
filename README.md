@@ -39,7 +39,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
 - ✅ Chronometer
 - ✅ Timer
-- ❌ Observable Value
+- ⌛ Observable Value
 - ❌ Perlin Noise 3D
 - ❌ Matrix4x4
 
