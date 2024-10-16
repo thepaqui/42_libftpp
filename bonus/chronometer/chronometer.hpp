@@ -1,9 +1,7 @@
-#ifndef LIBFTPP_TIMER_HPP
-# define LIBFTPP_TIMER_HPP
+#ifndef LIBFTPP_CHRONOMETER_HPP
+# define LIBFTPP_CHRONOMETER_HPP
 
 # include <exception>
-# include <ctime>
-# include <sys/time.h>
 # include <chrono>
 
 class Chronometer
