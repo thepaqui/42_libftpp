@@ -1,15 +1,17 @@
 #include "chronometer.hpp"
 
-Chronometer::Chronometer()
-: mode(Precision::SEC), state(State::SET)
-{}
-
+// Constructs with given precision
 Chronometer::Chronometer(
 	Precision mode
 )
 : mode(mode), state(State::SET)
 {}
 
+// Starts chronometer
+// Resets chronometer if it was used before without being reset
+// It resets without changing the precision
+// Throws if chronometer was already started
+// Throws if clock_gettime() failed
 void
 Chronometer::start()
 {
@@ -23,6 +25,10 @@ Chronometer::start()
 	state = State::STARTED;
 }
 
+// Stops chronometer
+// Throws if chronometer was not started
+// Throws if chronometer was already stopped without being reset
+// Throws if clock_gettime() failed
 void
 Chronometer::stop()
 {
@@ -36,6 +42,8 @@ Chronometer::stop()
 	state = State::STOPPED;
 }
 
+// Resets chronometer
+// Does not change precision
 void
 Chronometer::reset() noexcept
 {
@@ -43,6 +51,8 @@ Chronometer::reset() noexcept
 	state = State::SET;
 }
 
+// Resets chronometer
+// Changes precision to given one
 void
 Chronometer::reset(
 	Precision newMode
@@ -53,6 +63,7 @@ Chronometer::reset(
 	state = State::SET;
 }
 
+// Changes precision to given one
 void
 Chronometer::setPrecision(
 	Precision newMode
@@ -61,6 +72,9 @@ Chronometer::setPrecision(
 	mode = newMode;
 }
 
+// Returns measured time in chronometer's precision
+// Throws if chronometer was just reset
+// Throws if chronometer was started but not stopped
 double
 Chronometer::getDuration()
 {
@@ -74,6 +88,10 @@ Chronometer::getDuration()
 	return duration;
 }
 
+// Changes precision to given one, even if it throws
+// Returns measured time in chronometer's new precision
+// Throws if chronometer was just reset
+// Throws if chronometer was started but not stopped
 double
 Chronometer::getDuration(
 	Precision convertTo

@@ -9,10 +9,10 @@ class Chronometer
 public :
 	enum class Precision
 	{
-		SEC = 0,// Seconds
-		MSEC = 1,// Millieconds
-		USEC = 2,// Microseconds
-		NSEC = 3// Nanoseconds
+		SEC = 0,	// Seconds
+		MSEC = 1,	// Millieconds
+		USEC = 2,	// Microseconds
+		NSEC = 3	// Nanoseconds
 	};
 
 private	:
@@ -39,48 +39,18 @@ private	:
 	double	getDuration_nsec() const;
 
 public	:
-	// Constructs with precision of seconds
-	Chronometer();
-	// Constructs with given precision
-	Chronometer(Precision mode);
-	// Default destructor
+	Chronometer(Precision mode = Precision::SEC);
 	~Chronometer() = default;
 
-	/* Methods */
-
-	// Starts chronometer
-	// Resets chronometer if it was used before without being reset
-	// It resets without changing the precision
-	// Throws if chronometer was already started
-	// Throws if clock_gettime() failed
 	void	start();
-
-	// Stops chronometer
-	// Throws if chronometer was not started
-	// Throws if chronometer was already stopped without being reset
-	// Throws if clock_gettime() failed
 	void	stop();
 
-	// Resets chronometer
-	// Does not change precision
 	void	reset() noexcept;
-
-	// Resets chronometer
-	// Changes precision to given one
 	void	reset(Precision newMode) noexcept;
 
-	// Changes precision to given one
 	void	setPrecision(Precision mode) noexcept;
 
-	// Returns measured time in chronometer's precision
-	// Throws if chronometer was just reset
-	// Throws if chronometer was started but not stopped
 	[[nodiscard]] double	getDuration();
-
-	// Changes precision to given one, even if it throws
-	// Returns measured time in chronometer's new precision
-	// Throws if chronometer was just reset
-	// Throws if chronometer was started but not stopped
 	[[nodiscard]] double	getDuration(Precision convertTo);
 
 	/* Exceptions */
