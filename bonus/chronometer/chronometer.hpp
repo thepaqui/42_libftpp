@@ -23,9 +23,9 @@ private	:
 		STOPPED
 	};
 
-	static constexpr double LF_THOUSAND	= 1000.0;
-	static constexpr double LF_MILLION	= 1000000.0;
-	static constexpr double LF_BILLION	= 1000000000.0;
+	static constexpr double THOUSAND	= 1000.0;
+	static constexpr double MILLION		= 1000000.0;
+	static constexpr double BILLION		= 1000000000.0;
 
 	using Timestamp = std::chrono::steady_clock::time_point;
 

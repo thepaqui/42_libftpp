@@ -1,6 +1,6 @@
 #include "chronometer.hpp"
 
-// Constructs with given precision
+// Constructs with given precision `mode`
 Chronometer::Chronometer(
 	Precision mode
 )
@@ -11,7 +11,6 @@ Chronometer::Chronometer(
 // Resets chronometer if it was used before without being reset
 // It resets without changing the precision
 // Throws if chronometer was already started
-// Throws if clock_gettime() failed
 void
 Chronometer::start()
 {
@@ -26,9 +25,8 @@ Chronometer::start()
 }
 
 // Stops chronometer
-// Throws if chronometer was not started
 // Throws if chronometer was already stopped without being reset
-// Throws if clock_gettime() failed
+// Throws if chronometer was not started
 void
 Chronometer::stop()
 {
@@ -52,7 +50,7 @@ Chronometer::reset() noexcept
 }
 
 // Resets chronometer
-// Changes precision to given one
+// Changes precision to `newMode`
 void
 Chronometer::reset(
 	Precision newMode
@@ -63,7 +61,7 @@ Chronometer::reset(
 	state = State::SET;
 }
 
-// Changes precision to given one
+// Changes precision to `newMode`
 void
 Chronometer::setPrecision(
 	Precision newMode
@@ -73,14 +71,14 @@ Chronometer::setPrecision(
 }
 
 // Returns measured time in chronometer's precision
-// Throws if chronometer was just reset
+// Throws if chronometer was unused
 // Throws if chronometer was started but not stopped
 double
 Chronometer::getDuration()
 {
 	if (state == State::SET)
 		throw NoStartException();
-	
+
 	if (state == State::STARTED)
 		throw NoStopException();
 
@@ -88,9 +86,9 @@ Chronometer::getDuration()
 	return duration;
 }
 
-// Changes precision to given one, even if it throws
+// Changes precision to `convertTo`, even if it throws
 // Returns measured time in chronometer's new precision
-// Throws if chronometer was just reset
+// Throws if chronometer was unused
 // Throws if chronometer was started but not stopped
 double
 Chronometer::getDuration(
@@ -117,13 +115,13 @@ Chronometer::calculateDuration()
 	switch (mode)
 	{
 		case Precision::USEC:
-			duration /= LF_THOUSAND;
+			duration /= THOUSAND;
 			break;
 		case Precision::MSEC:
-			duration /= LF_MILLION;
+			duration /= MILLION;
 			break;
 		case Precision::SEC:
-			duration /= LF_BILLION;
+			duration /= BILLION;
 			break;
 		default :
 			break;
