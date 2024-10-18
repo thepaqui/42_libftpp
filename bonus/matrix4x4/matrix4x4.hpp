@@ -3,28 +3,34 @@
 
 //# include "../../mathematics/ivector3/ivector3.hpp"
 
+# include <cstdint>
 # include <vector>
 # include <initializer_list>
 # include <stdexcept>
-# include <type_traits> // TODO: Try without
-# include <cmath> // TODO: Try without
+# include <ostream>
+# include <type_traits>
+
+enum class MatrixType
+{
+	MAT_NULL,	// Fills with 0
+	MAT_ID		// Identity matrix
+};
 
 template <typename TType>
 class Matrix4x4
 {
-private	:
+static_assert(
+	std::is_arithmetic_v<TType>,
+	"Matrix4x4 class can only be instantiated with arithmetic types."
+);
+
+private :
 	std::vector<TType>	_data;
 
 	size_t	index(const uint8_t row, const uint8_t col) const noexcept;
 
-public	:
-	enum class Type
-	{
-		MAT_NULL,	// Fills with 0
-		MAT_ID		// Identity matrix
-	};
-
-	Matrix4x4(const Type type = MAT_NULL);
+public :
+	Matrix4x4(MatrixType type = MatrixType::MAT_NULL);
 	Matrix4x4(const Matrix4x4 &obj);
 	Matrix4x4(const std::initializer_list<TType> data);
 	~Matrix4x4() = default;
@@ -35,23 +41,28 @@ public	:
 	const TType&	getElem(const size_t row, const size_t col) const;
 	void			setElem(const size_t row, const size_t col, const TType n);
 
-	Matrix4x4	&operator=(const Matrix4x4 &obj);
-	Matrix4x4	operator+(const Matrix4x4 &obj) const;
-	Matrix4x4	operator-(const Matrix4x4 &obj) const;
-	Matrix4x4	operator*(const TType n) const;
-	Matrix4x4	operator*(const Matrix4x4 &obj) const;
-	template <typename std::enable_if<std::is_floating_point<TType>::value, int>::type = 0>
-	Matrix4x4	operator/(const TType n) const;
-	bool		operator==(const Matrix4x4& obj) const;
+	Matrix4x4&			operator=(const Matrix4x4 &obj);
+	Matrix4x4			operator+(const Matrix4x4 &obj) const;
+	Matrix4x4			operator-(const Matrix4x4 &obj) const;
+	Matrix4x4			operator*(const TType n) const;
+	Matrix4x4			operator*(const Matrix4x4 &obj) const;
+	Matrix4x4<float>	operator/(const TType n) const;
+	template <typename UType = TType, typename std::enable_if<std::is_integral<UType>::value, int>::type = 0>
+	Matrix4x4			operator%(const TType n) const;
+	bool				operator==(const Matrix4x4& obj) const;
+	bool				operator!=(const Matrix4x4& obj) const;
 
-	Matrix4x4	transpose(const Matrix4x4 &obj);
+	Matrix4x4	transpose() const;
+
+	static Matrix4x4<float>	average(const Matrix4x4& obj1, const Matrix4x4& obj2);
+	static Matrix4x4		compMult(const Matrix4x4& obj1, const Matrix4x4& obj2);
 
 	/* Exceptions */
 
 	class InvalidMatrixTypeException : public std::invalid_argument {
 	public :
 		explicit InvalidMatrixTypeException()
-		: invalid_argument("Matrix4x4: Invalid type") {}
+		: invalid_argument("Matrix4x4: Invalid matrix type") {}
 	};
 
 	class InvalidInitListException : public std::invalid_argument {
@@ -75,6 +86,9 @@ public	:
 
 template <typename TType>
 Matrix4x4<TType>	operator*(const TType n, const Matrix4x4<TType> &obj);
+
+template <typename TType>
+std::ostream&	operator<<(std::ostream &ostream, const Matrix4x4<TType> &obj);
 
 # include "matrix4x4.tpp"
 

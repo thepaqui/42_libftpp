@@ -7,37 +7,24 @@
 
 template <typename TType>
 Matrix4x4<TType>::Matrix4x4(
-	const Type type
+	MatrixType type
 )
+: _data(16, 0)
 {
-	// TODO: Check might now be useless
-	if (type != Type::MAT_NULL && type != Type::MAT_ID)
+	if (type != MatrixType::MAT_NULL && type != MatrixType::MAT_ID)
 		throw InvalidMatrixTypeException();
 
-	if (type == Type::MAT_ID)
-	{
+	if (type == MatrixType::MAT_ID)
 		for (size_t i = 0; i < 4; i++)
-		{
-			for (size_t j = 0; j < 4; j++)
-			{
-				if (i == j)
-					this->_data.push_back(1);
-				else
-					this->_data.push_back(0);
-			}
-		}
-	}
-	else
-		this->_data.assign(16, 0);
+			_data[index(i, i)] = 1;
 }
 
 template <typename TType>
 Matrix4x4<TType>::Matrix4x4(
 	const Matrix4x4<TType> &obj
 )
-{
-	this->_data = obj._data;
-}
+: _data(obj._data)
+{}
 
 template <typename TType>
 Matrix4x4<TType>::Matrix4x4(
@@ -47,7 +34,7 @@ Matrix4x4<TType>::Matrix4x4(
 	if (data.size() != 16)
 		throw InvalidInitListException();
 
-	this->_data.assign(data);
+	_data.assign(data);
 }
 
 // Methods
@@ -83,10 +70,9 @@ Matrix4x4<TType>::getElem(
 	const size_t col
 ) const
 {
-	size_t	i = index(row, col);
-	if (i >= 16)
+	if (row >= 4 || col >= 4)
 		throw BadReadException();
-	return this->_data[i];
+	return _data[index(row, col)];
 }
 
 template <typename TType>
@@ -97,10 +83,9 @@ Matrix4x4<TType>::setElem(
 	const TType n
 )
 {
-	size_t	i = index(row, col);
-	if (i >= 16)
+	if (row >= 4 || col >= 4)
 		throw BadWriteException();
-	this->_data[i] = n;
+	_data[index(row, col)] = n;
 }
 
 // Operator overloads
@@ -111,10 +96,9 @@ Matrix4x4<TType>::operator=(
 	const Matrix4x4<TType> &obj
 )
 {
-	if (this == &obj)
-		return (*this);
+	if (this != &obj)
+		_data = obj._data;
 
-	this->_data = obj._data;
 	return (*this);
 }
 
@@ -126,9 +110,8 @@ Matrix4x4<TType>::operator+(
 {
 	Matrix4x4<TType>	ret(*this);
 
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			ret._data[index(i, j)] += obj.getElem(i, j);
+	for (size_t i = 0; i < 16; i++)
+		ret._data[i] += obj._data[i];
 
 	return ret;
 }
@@ -141,9 +124,8 @@ Matrix4x4<TType>::operator-(
 {
 	Matrix4x4<TType>	ret(*this);
 
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			ret._data[index(i, j)] -= obj.getElem(i, j);
+	for (size_t i = 0; i < 16; i++)
+		ret._data[i] -= obj._data[i];
 
 	return ret;
 }
@@ -156,9 +138,8 @@ Matrix4x4<TType>::operator*(
 {
 	Matrix4x4<TType>	ret(*this);
 
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			ret._data[index(i, j)] *= n;
+	for (size_t i = 0; i < 16; i++)
+		ret._data[i] *= n;
 
 	return ret;
 }
@@ -176,8 +157,8 @@ Matrix4x4<TType>::operator*(
 		for (size_t j = 0; j < 4; j++)
 		{
 			TType	val = 0;
-			for (size_t p = 0; p < 4; p++)
-				val += this->getElem(i, p) * obj.getElem(p, j);
+			for (size_t k = 0; k < 4; k++)
+				val += getElem(i, k) * obj.getElem(k, j);
 			ret.setElem(i, j, val);
 		}
 	}
@@ -186,17 +167,30 @@ Matrix4x4<TType>::operator*(
 }
 
 template <typename TType>
-template <typename std::enable_if<std::is_floating_point<TType>::value, int>::type>
-Matrix4x4<TType>
+Matrix4x4<float>
 Matrix4x4<TType>::operator/(
+	const TType n
+) const
+{
+	Matrix4x4<float>	ret;
+
+	for (size_t i = 0; i < 16; i++)
+		ret.data()[i] = static_cast<float>(_data[i]) / static_cast<float>(n);
+
+	return ret;
+}
+
+template <typename TType>
+template <typename UType, typename std::enable_if<std::is_integral<UType>::value, int>::type>
+Matrix4x4<TType>
+Matrix4x4<TType>::operator%(
 	const TType n
 ) const
 {
 	Matrix4x4<TType>	ret(*this);
 
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			ret._data[index(i, j)] /= n;
+	for (size_t i = 0; i < 16; i++)
+		ret._data[i] %= n;
 
 	return ret;
 }
@@ -208,16 +202,13 @@ operator*(
 	const Matrix4x4<TType> &obj
 )
 {
-	Matrix4x4<TType>	ret;
+	Matrix4x4<TType>	ret(obj);
 
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			ret.setElem(i, j, obj.getElem(i, j) * n);
+	for (size_t i = 0; i < 16; i++)
+		ret.data()[i] *= n;
 
 	return ret;
 }
-
-// Others
 
 template<typename TType>
 bool
@@ -225,27 +216,82 @@ Matrix4x4<TType>::operator==(
 	const Matrix4x4& obj
 ) const
 {
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			if (this->getElem(i, j) != obj2.getElem(i, j))
-				return false;
+	for (size_t i = 0; i < 16; i++)
+		if (_data[i] != obj._data[i])
+			return false;
 
 	return true;
 }
 
+template<typename TType>
+bool
+Matrix4x4<TType>::operator!=(
+	const Matrix4x4& obj
+) const
+{
+	for (size_t i = 0; i < 16; i++)
+		if (_data[i] != obj._data[i])
+			return true;
+
+	return false;
+}
+
+// Others
+
 template <typename TType>
 Matrix4x4<TType>
-Matrix4x4<TType>::transpose(
-	const Matrix4x4 &obj
-)
+Matrix4x4<TType>::transpose() const
 {
 	Matrix4x4	ret;
 
 	for (size_t i = 0; i < 4; i++)
 		for (size_t j = 0; j < 4; j++)
-			ret.setElem(j, i, obj.getElem(i, j));
+			ret.setElem(j, i, this->getElem(i, j));
 
 	return ret;
+}
+
+template <typename TType>
+Matrix4x4<float>
+Matrix4x4<TType>::average(
+	const Matrix4x4 &obj1,
+	const Matrix4x4 &obj2
+)
+{
+	return Matrix4x4<float>((obj1 + obj2) / 2);
+}
+
+template <typename TType>
+Matrix4x4<TType>
+Matrix4x4<TType>::compMult(
+	const Matrix4x4 &obj1,
+	const Matrix4x4 &obj2
+)
+{
+	Matrix4x4	ret(obj1);
+
+	for (size_t i = 0; i < 16; i++)
+		ret.data()[i] *= obj2.data()[i];
+
+	return ret;
+}
+
+template <typename TType>
+std::ostream&
+operator<<(
+	std::ostream &ostream,
+	const Matrix4x4<TType> &obj
+)
+{
+	for (size_t i = 0; i < 4; i++) {
+		ostream << "| ";
+		for (size_t j = 0; j < 4; j++) {
+			ostream << obj.getElem(i, j) << " ";
+		}
+		ostream << "|\n";
+	}
+	ostream << std::flush;
+	return (ostream);
 }
 
 #endif
