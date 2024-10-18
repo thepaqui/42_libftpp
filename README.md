@@ -43,8 +43,6 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 - ✅ Matrix4x4
 - ✅ Strategy Selector
 
-TODO: Protect all calls to Callbacks (std::function is nullable)
-
 ## Useful Links
 
 - [I/O Manipulators](https://en.cppreference.com/w/cpp/io/manip)

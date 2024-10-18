@@ -65,7 +65,8 @@ StateMachine<TState>::transitionTo(
 	if (transitions.find(tmp) == transitions.end())
 		throw UndefinedTransitionException();
 
-	transitions[tmp]();
+	if (transitions[tmp])
+		transitions[tmp]();
 }
 
 template <typename TState>
@@ -75,7 +76,8 @@ StateMachine<TState>::update()
 	if (actions.find(currentState) == actions.end())
 		throw UndefinedActionException();
 
-	actions[currentState]();
+	if (actions[currentState])
+		actions[currentState]();
 }
 
 #endif

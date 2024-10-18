@@ -5,6 +5,7 @@
 # include <functional>
 # include <thread>
 # include <atomic>
+# include <stdexcept>
 
 using Callback = std::function<void()>;
 
@@ -21,6 +22,13 @@ public :
 
 	void	start();
 	void	stop();
+
+	/* Exceptions */
+	class NullFunctionException : public std::invalid_argument {
+	public :
+		explicit NullFunctionException()
+		: invalid_argument("Thread: Function can't be null.") {}
+	};
 };
 
 #endif

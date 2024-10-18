@@ -164,7 +164,7 @@ Server::update()
 
 	for (auto& [clientID, msg] : processingList) {
 		auto	it = actionsList.find(msg.type());
-		if (it != actionsList.end())
+		if (it != actionsList.end() && it->second)
 			it->second(clientID, msg);
 	}
 }

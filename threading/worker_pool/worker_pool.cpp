@@ -43,6 +43,8 @@ WorkerPool::addJob(
 	const std::shared_ptr<IJob>& jobToExecute
 )
 {
+	if (!jobToExecute)
+		return ;
 	std::lock_guard<std::mutex>	lock(mtx);
 	jobs.push(jobToExecute);
 	cv.notify_one();

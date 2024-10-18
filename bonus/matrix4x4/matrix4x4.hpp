@@ -1,8 +1,6 @@
 #ifndef LIBFTPP_MATRIX4X4_HPP
 # define LIBFTPP_MATRIX4X4_HPP
 
-//# include "../../mathematics/ivector3/ivector3.hpp"
-
 # include <cstdint>
 # include <vector>
 # include <initializer_list>

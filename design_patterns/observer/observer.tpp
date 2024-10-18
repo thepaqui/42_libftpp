@@ -22,7 +22,8 @@ Observer<TEvent>::notify(
 	if (eventMap.find(event) == eventMap.end())
 		return ;
 	for (auto& callback : eventMap[event])
-		callback();
+		if (callback)
+			callback();
 }
 
 #endif

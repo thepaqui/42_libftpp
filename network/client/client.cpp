@@ -145,7 +145,7 @@ Client::update()
 	for (Message& msg : processingList) {
 		auto	it = actionsList.find(msg.type());
 
-		if (it != actionsList.end())
+		if (it != actionsList.end() && it->second)
 			it->second(msg);
 	}
 }

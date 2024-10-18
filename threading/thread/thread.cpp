@@ -5,8 +5,13 @@ Thread::Thread(
 	const std::string& name,
 	Callback functToExecute
 )
-: threadName("[" + name + "] "), func(std::move(functToExecute)), running(false)
-{}
+: threadName("[" + name + "] "), running(false)
+{
+	if (!functToExecute)
+		throw NullFunctionException();
+
+	func = std::move(functToExecute);
+}
 
 void
 Thread::start()
