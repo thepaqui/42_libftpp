@@ -41,7 +41,7 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 - ✅ Timer
 - ✅ Observable Value
 - ✅ Matrix4x4
-- ⌛ Strategy
+- ⌛ Strategy Selector
 
 TODO: Protect all calls to Callbacks (std::function is nullable)
 
