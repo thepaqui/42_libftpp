@@ -41,7 +41,9 @@ This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 - ✅ Timer
 - ✅ Observable Value
 - ✅ Matrix4x4
-- ⌛ Perlin Noise 3D
+- ⌛ Strategy
+
+TODO: Protect all calls to Callbacks (std::function is nullable)
 
 ## Useful Links
 
