@@ -1,7 +1,7 @@
-#include <iostream>
-#include <chrono>
 #include "thread.hpp"
 #include "../../iostream/iostream.hpp"
+#include <iostream>
+#include <chrono>
 
 void myFunction1() {
     for (int i = 0; i < 5; ++i) {

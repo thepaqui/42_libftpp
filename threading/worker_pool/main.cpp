@@ -1,8 +1,8 @@
 #include "worker_pool.hpp"
+#include "../../iostream/iostream.hpp"
 #include <iostream>
 #include <memory>
 #include <chrono>
-#include "../../iostream/iostream.hpp"
 
 class IntJob : public WorkerPool::IJob {
 private :

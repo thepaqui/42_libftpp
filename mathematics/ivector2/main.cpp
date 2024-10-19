@@ -1,5 +1,5 @@
-#include <iostream>
 #include "ivector2.hpp"
+#include <iostream>
 
 int main() {
     IVector2<int> vec1(3, 4);
@@ -53,4 +53,3 @@ int main() {
 
     return 0;
 }
-

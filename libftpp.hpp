@@ -6,4 +6,5 @@
 # include "threading/threading.hpp"
 # include "network/network.hpp"
 # include "mathematics/mathematics.hpp"
+# include "bonus/bonus.hpp"
 #endif

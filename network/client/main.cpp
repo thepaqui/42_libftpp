@@ -1,6 +1,7 @@
 #include "client.hpp"
 #include "../../iostream/iostream.hpp"
 #include <string>
+#include <algorithm>
 
 int main() {
 	Client client;

@@ -1,7 +1,7 @@
+#include "random_2D_coordinate_generator.hpp"
 #include <iostream>
 #include <vector>
 #include <utility>
-#include "random_2D_coordinate_generator.hpp"
 
 int main() {
     Random2DCoordinateGenerator randomGenerator;

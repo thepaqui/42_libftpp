@@ -1,7 +1,7 @@
-#include <iostream>
-#include <thread>
 #include "thread_safe_queue.hpp"
 #include "../../iostream/iostream.hpp"
+#include <iostream>
+#include <thread>
 
 void testPush(const std::string& prefix, ThreadSafeQueue<int>& p_queue, int p_value) {
     threadSafeCout.setPrefix(prefix);
@@ -36,4 +36,3 @@ int main() {
 
     return 0;
 }
-

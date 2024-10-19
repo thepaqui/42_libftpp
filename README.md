@@ -2,6 +2,19 @@
 
 This is my `libftpp` project for 42 Nice, started on August 8th 2024.
 
+## HOW TO USE
+
+```
+$> make
+...Compiling static library libftpp.a
+
+$> c++ -Wall -Wextra -Werror -std=c++20 main.cpp -L. -lftpp
+...Compiling executable a.out
+
+$> ./a.out
+...Your program executes
+```
+
 ## TODO LIST
 
 - ✅ Basic Setup

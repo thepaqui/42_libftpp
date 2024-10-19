@@ -1,5 +1,5 @@
-#include <iostream>
 #include "state_machine.hpp"
+#include <iostream>
 
 enum class State {
 	Idle,
@@ -60,4 +60,3 @@ int main() {
 
 	return 0;
 }
-

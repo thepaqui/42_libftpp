@@ -1,5 +1,5 @@
-#include <iostream>
 #include "singleton.hpp"
+#include <iostream>
 
 class MyClass : public Singleton<MyClass> {
 private:

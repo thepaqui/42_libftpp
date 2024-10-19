@@ -2,39 +2,42 @@ NAME = libftpp.a
 
 CC = c++
 
-CFLAGS = -Wall -Wextra -Werror -std=c++2a
+CFLAGS = -Wall -Wextra -Werror -std=c++20
 
-SRCS = 
+SRCS =	data_structures/data_buffer/data_buffer.cpp \
+				design_patterns/memento/memento.cpp \
+				iostream/thread_safe_iostream/thread_safe_iostream.cpp \
+				threading/thread/thread.cpp \
+				threading/worker_pool/worker_pool.cpp \
+				threading/persistent_worker/persistent_worker.cpp \
+				network/message/message.cpp \
+				network/client/client.cpp \
+				network/server/server.cpp \
+				mathematics/random_2D_coordinate_generator/random_2D_coordinate_generator.cpp \
+				mathematics/perlin_noise_2D/perlin_noise_2D.cpp \
+				bonus/chronometer/chronometer.cpp \
+				bonus/timer/timer.cpp
 
-MANDATORY_OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS:.cpp=.o)
 
-BONUS_SRCS = 
-
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
-
-ifndef WITH_BONUS
-OBJS = $(MANDATORY_OBJS)
-else
-OBJS = $(MANDATORY_OBJS) $(BONUS_OBJS)
-endif
-
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+%.o: %.cpp
+	@echo "Compiling" $@
+	@$(CC) $(CFLAGS) -o $@ -c $<
 	
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+	@echo "Compiling" $(NAME)
+	@ar rcs $(NAME) $(OBJS)
 
 clean:
-	rm -f $(OBJS) $(BONUS_OBJS)
+	@echo "Removing all object files"
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@echo "Removing" $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
-
-bonus: 
-	make WITH_BONUS=1 all
