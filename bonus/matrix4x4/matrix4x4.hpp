@@ -85,9 +85,6 @@ public :
 template <typename TType>
 Matrix4x4<TType>	operator*(const TType n, const Matrix4x4<TType> &obj);
 
-template <typename TType>
-std::ostream&	operator<<(std::ostream &ostream, const Matrix4x4<TType> &obj);
-
 # include "matrix4x4.tpp"
 
 #endif

@@ -72,7 +72,7 @@ Pool<TType>::resize(
 
 template <typename TType>
 template <typename ... TArgs>
-Pool<TType>::Object
+typename Pool<TType>::Object
 Pool<TType>::acquire(
 	TArgs &&...p_args
 )

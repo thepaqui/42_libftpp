@@ -1,6 +1,7 @@
 #include "server.hpp"
 #include "../../iostream/iostream.hpp"
 #include <string>
+#include <algorithm>
 
 int main() {
 	Server server;

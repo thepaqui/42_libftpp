@@ -1,6 +1,20 @@
 #include "matrix4x4.hpp"
 #include <iostream>
 
+template <typename TType>
+std::ostream&	operator<<(std::ostream &ostream, const Matrix4x4<TType> &obj)
+{
+	for (size_t i = 0; i < 4; i++) {
+		ostream << "| ";
+		for (size_t j = 0; j < 4; j++) {
+			ostream << obj.getElem(i, j) << " ";
+		}
+		ostream << "|\n";
+	}
+	ostream << std::flush;
+	return (ostream);
+}
+
 int main()
 {
 	try {

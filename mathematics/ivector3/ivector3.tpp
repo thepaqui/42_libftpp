@@ -20,7 +20,7 @@ IVector3<TType>::IVector3(
 {
 	x = xVal;
 	y = yVal;
-	z = zVal
+	z = zVal;
 }
 
 template <typename TType>

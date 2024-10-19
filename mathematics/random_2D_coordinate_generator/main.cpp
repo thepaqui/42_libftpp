@@ -28,7 +28,7 @@ int main() {
     }
     std::cout << std::endl;
 
-    // randomGenerator.setSeed(5318008);
+//    randomGenerator.setSeed(5318008);
 
     std::cout << "Seed = " << randomGenerator.seed() << std::endl;
 

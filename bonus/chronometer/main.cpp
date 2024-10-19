@@ -16,10 +16,16 @@ int main()
 
 	std::vector<int>	vec;
 	std::list<int>		lst;
+	try {
+		vec.reserve(CONTAINER_SIZE);
 
-	for (int i = 0; i < CONTAINER_SIZE; i++) {
-		vec.push_back(i);
-		lst.push_back(i);
+		for (int i = 0; i < CONTAINER_SIZE; i++) {
+			vec.push_back(i);
+			lst.push_back(i);
+		}
+	} catch (const std::exception& e) {
+		std::cout << "CONTAINER_SIZE is too big." << std::endl;
+		return -1;
 	}
 
 	srand(time(0));

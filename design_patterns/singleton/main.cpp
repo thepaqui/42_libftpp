@@ -23,7 +23,7 @@ int main() {
 				// This should throw an exception as instance is not yet created
 				MyClass::instance();
 		} catch (const std::exception& e) {
-				std::cout << e.what() << std::endl; // Output: "Exception: Instance not yet created"
+				std::cout << e.what() << std::endl; // Output: "Singleton: Instance not yet created"
 		}
 
 		MyClass::instantiate(42); // Setting up the instance
@@ -35,7 +35,7 @@ int main() {
 				// This should throw an exception as instance is already created
 				MyClass::instantiate(100);
 		} catch (const std::exception& e) {
-				std::cout << e.what() << std::endl; // Output: "Exception: Instance already created"
+				std::cout << e.what() << std::endl; // Output: "Singleton: Instance already created"
 		}
 
 		return 0;

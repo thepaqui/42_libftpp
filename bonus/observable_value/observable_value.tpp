@@ -54,7 +54,7 @@ ObservableValue<TType>::getValue() const
 }
 
 template <typename TType>
-ObservableValue<TType>::Token
+typename ObservableValue<TType>::Token
 ObservableValue<TType>::subscribe(
 	const Callback& lambda
 )

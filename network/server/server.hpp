@@ -42,7 +42,7 @@ private :
 			MESSAGE
 		};
 		int			sockfd;
-		State		state;
+		State		state{State::NOSIZE};
 		size_t		size;
 		std::string	data;
 		ssize_t		bytesRead;
