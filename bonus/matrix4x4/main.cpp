@@ -43,7 +43,7 @@ int main()
 		std::cout << "id != Mat1\n" << std::endl;
 
 	Matrix4x4<int>	id2(id);
-	std::cout << "id (default)\n" << id << std::endl;
+	std::cout << "id2 (default)\n" << id2 << std::endl;
 
 	if (id == id2)
 		std::cout << "id == id2\n" << std::endl;
