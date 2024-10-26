@@ -1,6 +1,7 @@
 # 42_libftpp
 
-This is my `libftpp` project for 42 Nice, started on August 8th 2024.
+This is my `libftpp` project for 42 Nice, started on August 8th 2024.  
+This project was validated on October 22nd 2024, with a grade of 125.
 
 ## HOW TO USE
 
